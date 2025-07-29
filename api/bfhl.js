@@ -1,13 +1,4 @@
-module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', '*');
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+module.exports = (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ 
       is_success: false,
@@ -66,12 +57,14 @@ module.exports = async (req, res) => {
       )
       .join('');
 
-    res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (error) {
     console.error('Error processing request:', error);
-    res.status(500).json({
+    return res.status(500).json({
       is_success: false,
       error: "Internal server error"
     });
   }
 };
+
+module.exports = handler;
