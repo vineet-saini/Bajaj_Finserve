@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFHL API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BFHL API Test</h1>
+        <p>Example POST request to /bfhl:</p>
+        <pre>
+curl -X POST https://your-url/bfhl \
+-H "Content-Type: application/json" \
+-d '{"data": ["a","1","334","4","R","$"]}'
+        </pre>
+        <p>Expected Response:</p>
+        <pre>
+{
+    "is_success": true,
+    "user_id": "john_doe_17091999",
+    "email": "john@xyz.com",
+    "roll_number": "ABCD123",
+    "odd_numbers": ["1"],
+    "even_numbers": ["334","4"],
+    "alphabets": ["A","R"],
+    "special_characters": ["$"],
+    "sum": "339",
+    "concat_string": "Ra"
+}
+        </pre>
+    </div>
+</body>
+</html>
