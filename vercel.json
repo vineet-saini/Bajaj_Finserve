@@ -9,11 +9,8 @@
     "routes": [
         {
             "src": "/bfhl",
-            "dest": "/api/bfhl.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/bfhl.js"
+            "dest": "/api/bfhl.js",
+            "methods": ["POST", "OPTIONS"]
         }
     ]
 }
