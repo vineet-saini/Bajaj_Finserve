@@ -1,16 +1,21 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000;
 
+// Remove PORT as it's not needed for serverless
 app.use(express.json());
 app.use(express.static('public'));
 
-app.all('*', (req, res, next) => {
-  console.log('Request received:', req.method, req.path);
-  next();
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    is_success: false,
+    error: "Something went wrong!"
+  });
 });
 
 app.post("/bfhl", (req, res) => {
+  try {
   const input = req.body.data;
   const userFullName = "john_doe";
   const dob = "17091999";
@@ -61,17 +66,30 @@ app.post("/bfhl", (req, res) => {
     )
     .join('');
 
-  return res.status(200).json(response);
+    return res.status(200).json(response);
+  } catch (error) {
+    console.error('Error processing request:', error);
+    return res.status(500).json({
+      is_success: false,
+      error: "Internal server error"
+    });
+  }
 });
 
 app.get("/", (req, res) => {
-  res.sendFile('index.html', { root: './public' });
+  try {
+    res.sendFile('index.html', { root: './public' });
+  } catch (error) {
+    res.status(500).send('Error loading page');
+  }
 });
 
 app.get("*", (req, res) => {
-  res.status(404).json({ error: "Not Found" });
+  res.status(404).json({ 
+    is_success: false,
+    error: "Not Found" 
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export for serverless use
+module.exports = app;
