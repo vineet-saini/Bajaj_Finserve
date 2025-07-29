@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFHL API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BFHL API Tester</h1>
+        <div class="input-group">
+            <label for="data">Enter data (comma-separated values):</label>
+            <input type="text" id="data" placeholder="Example: a,1,334,4,R,$">
+        </div>
+        <button onclick="sendData()">Send Request</button>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        async function sendData() {
+            const dataInput = document.getElementById('data').value;
+            const responseDiv = document.getElementById('response');
+            
+            // Convert comma-separated string to array
+            const dataArray = dataInput.split(',').map(item => item.trim());
+            
+            try {
+                const response = await fetch('/bfhl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: dataArray })
+                });
+                
+                const result = await response.json();
+                responseDiv.innerHTML = 'Response:\n' + JSON.stringify(result, null, 2);
+            } catch (error) {
+                responseDiv.innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
