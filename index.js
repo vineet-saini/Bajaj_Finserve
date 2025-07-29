@@ -5,6 +5,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static('public'));
 
+app.all('*', (req, res, next) => {
+  console.log('Request received:', req.method, req.path);
+  next();
+});
+
 app.post("/bfhl", (req, res) => {
   const input = req.body.data;
   const userFullName = "john_doe";
@@ -60,7 +65,11 @@ app.post("/bfhl", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile('index.html', { root: 'public' });
+  res.sendFile('index.html', { root: './public' });
+});
+
+app.get("*", (req, res) => {
+  res.status(404).json({ error: "Not Found" });
 });
 
 app.listen(PORT, () => {
